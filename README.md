@@ -5,3 +5,4 @@
 # Left click to shoot and press space to reload.
 # This project isn't licensed. All of the code is original.
 # Credit to Ivory Drive for the background image.
+# pip3 install pyglet installs pyglet on windows
