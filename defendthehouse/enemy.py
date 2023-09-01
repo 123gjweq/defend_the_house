@@ -42,9 +42,9 @@ class Enemy():
 			self.attack_rate = 30
 			self.damage = 1
 
-	def move_forward(self):
+	def move_forward(self, dt):
 		if self.path_to_walk != None:
-			self.y = self.original_y + self.path_to_walk[self.x + 20]
+			self.y = self.original_y + self.path_to_walk[self.x + 20] * dt * 60
 		self.x += self.vel
 
 	def attack_wall(self):

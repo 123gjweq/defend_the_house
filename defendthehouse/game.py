@@ -76,6 +76,7 @@ class Levels():
 		self.flag = False
 		self.i = 0 #end time
 		self.t1 = 0
+		self.dt = 0
 		self.is_play = False
 
 		for level_difficulty in dict_of_levels:
@@ -147,7 +148,7 @@ class Levels():
 		for enemy in self.list_of_enemies:
 			if enemy.type == "swordman" or enemy.type == "gunman":
 				if enemy.y - (.5 * enemy.width) - 560 < round(((-159 / 160) * (enemy.x)) + 255): #linear equation to calculate the fence
-					enemy.move_forward()
+					enemy.move_forward(self.dt)
 				else:
 					if enemy.running:
 						enemy.running = False
@@ -158,7 +159,7 @@ class Levels():
 						enemy.running, enemy.x = False, round(enemy.x)
 					enemy.attack_wall()
 				else:
-					enemy.move_forward()
+					enemy.move_forward(self.dt)
 
 	def sniper_shoot(self):
 		for sniper in Levels.sniper_man_list:
@@ -210,6 +211,8 @@ class Levels():
 		for bullet in Gun.draw_shoot_animation:
 			bullet[0].draw_animation(bullet[1])
 			bullet[0].animation_ticker += 1
+
+
 			if bullet[0].animation_ticker % 30 == 0:
 				del bullet[0]
 				Gun.draw_shoot_animation.remove(bullet)
@@ -220,6 +223,7 @@ class Levels():
 				self.list_of_active_snipers.clear()
 
 	def update(self, dt):
+		self.dt = dt
 		self.spawn_new_enemy()
 		self.spawn_rocket_man()
 		self.enemy_activity()
@@ -316,7 +320,6 @@ class Shop():
 			if Money.money >= 25000:
 				Wall.max_health += 150
 				Money.money -= 25000
-			print("hi")
 		if x in range(600, 750) and y in range(427, 467) and button == 1:
 			if Money.money >= 75000 and Levels.sniper_rifle == False:
 				Gun.type_of = "sniper"
@@ -395,7 +398,7 @@ class Game(pyglet.window.Window):
 		super().__init__(*args, **kwargs)
 		pyglet.gl.glEnable(pyglet.gl.GL_BLEND)
 		pyglet.gl.glBlendFunc(pyglet.gl.GL_SRC_ALPHA, pyglet.gl.GL_ONE_MINUS_SRC_ALPHA)
-		self.frame_rate = 1/60.0
+		self.frame_rate = 1/120.0
 		self.screen_atm = Mainscreen()
 		self.level = 0
 
